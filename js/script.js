@@ -17,7 +17,9 @@ FSJS project 2 - List Filter and Pagination
    scoped to that function.
 ***/
 
-
+//const listItemsShown;
+const allListItmesStudents = document.querySelectorAll("LI");
+const studentList = document.querySelector("UL");
 
 
 /*** 
@@ -35,13 +37,49 @@ FSJS project 2 - List Filter and Pagination
        "invoke" the function 
 ***/
 
+let hideElements = () => {
+   allListItmesStudents[0].style.display = "none";
+}
+hideElements();
+
+/*
+take list of all students and loop through.
+if (click on element 1) display list items with i smaller than 10
+if (click in element 2) display list items with i <10 and smaller 20 smaller
+if (click on elemt 3)
+
+
+
+*/
 
 
 
 /*** 
    Create the `appendPageLinks function` to generate, append, and add 
    functionality to the pagination buttons.
+
+   interate trough the length of the student list
+   after every 10th items in the list create a new page.
+
 ***/
+
+let createPagination = () => {
+   // paginationList is created an append to the dom
+   const paginationList = document.createElement("ul");
+   paginationList.className = "pagination"
+   studentList.parentNode.insertBefore(paginationList, studentList.nextSibling);
+
+   // Now create 1 new li item for every 10 ListItems and append them to the paginationList
+   for(let i = 0; i < allListItmesStudents.length; i+=10) {
+      if(i) {
+         let newLi = document.createElement("li");
+         paginationList.appendChild(newLi);
+      }
+   };
+
+}
+
+createPagination();
 
 
 
