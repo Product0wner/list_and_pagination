@@ -1,26 +1,63 @@
-/******************************************
-Treehouse Techdegree:
-FSJS project 2 - List Filter and Pagination
-******************************************/
-   
-// Study guide for this project - https://drive.google.com/file/d/1OD1diUsTMdpfMDv677TfL1xO2CEkykSz/view?usp=sharing
-
-
-/*** 
-   Add your global variables that store the DOM elements you will 
-   need to reference and/or manipulate. 
-   
-   But be mindful of which variables should be global and which 
-   should be locally scoped to one of the two main functions you're 
-   going to create. A good general rule of thumb is if the variable 
-   will only be used inside of a function, then it can be locally 
-   scoped to that function.
-***/
 
 //const listItemsShown;
-const allListItmesStudents = document.querySelectorAll("LI");
 const studentList = document.querySelector("UL");
+const itemsOfStudenList = studentList.children;
+const paginationList = document.createElement("UL");
 
+// only show the 10 first elements
+for(let i = 10; i < itemsOfStudenList.length; i++){
+   itemsOfStudenList[i].style.display = "none";
+}
+
+// First step create paginationList and append to the DOM
+let createPagination = () => {
+   paginationList.className = "pagination";
+   studentList.parentNode.insertBefore(paginationList, studentList.nextSibling);
+
+   // Then create 1 new li item for every 10 ListItems and append them to the paginationList
+   for(let i = 0; i < itemsOfStudenList.length; i++) {
+      if(i % 10 == 0) {
+         let newLi = document.createElement("li");
+         let pageIndex = paginationList.childNodes.length + 1;
+
+         // Make the first item by default a different class compared to following items
+         if(pageIndex === 1) {
+            newLi.innerHTML = "<a class='active' href=#>"+ pageIndex +"</a>";
+            paginationList.appendChild(newLi);
+         } else {
+            newLi.innerHTML = "<a class='' href=#>"+ pageIndex +"</a>";
+            paginationList.appendChild(newLi);
+         } 
+      }
+   }
+}
+
+
+paginationList.addEventListener("click", (e) => {
+   e.preventDefault();
+   targetIndex = parseInt(e.target.textContent, 10);
+
+   // Make all items not selected
+   for(i=0; i < paginationList.children.length; i++){
+      paginationList.childNodes[i].lastChild.className = '';
+   }
+   // Make the clicked item selected
+   e.target.className ="active";
+
+   // Hide all items of the student list
+   for(let i = 0; i < itemsOfStudenList.length; i++){
+      itemsOfStudenList[i].style.display = "none";
+   }
+   
+   // Show the Students for clicked pagination - Every page should have maximum of 10 Students.
+   for(let i = (targetIndex-1)*10; i < targetIndex*10 ; i++){
+   itemsOfStudenList[i].style.display = "block";
+   }
+});
+
+
+
+createPagination();
 
 /*** 
    Create the `showPage` function to hide all of the items in the 
@@ -37,10 +74,12 @@ const studentList = document.querySelector("UL");
        "invoke" the function 
 ***/
 
-let hideElements = () => {
-   allListItmesStudents[0].style.display = "none";
-}
-hideElements();
+
+/*
+if tragetIndex is 1 dann Starte Bei (TargetIndex-1*10) Ende bei TargetIndex*10
+if tragetIndex is 2 dann zeige (TargetIndex-1*10) bis TargetIndex*10
+
+*/
 
 /*
 take list of all students and loop through.
@@ -63,23 +102,7 @@ if (click on elemt 3)
 
 ***/
 
-let createPagination = () => {
-   // paginationList is created an append to the dom
-   const paginationList = document.createElement("ul");
-   paginationList.className = "pagination"
-   studentList.parentNode.insertBefore(paginationList, studentList.nextSibling);
 
-   // Now create 1 new li item for every 10 ListItems and append them to the paginationList
-   for(let i = 0; i < allListItmesStudents.length; i+=10) {
-      if(i) {
-         let newLi = document.createElement("li");
-         paginationList.appendChild(newLi);
-      }
-   };
-
-}
-
-createPagination();
 
 
 
